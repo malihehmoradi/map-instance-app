@@ -70,7 +70,7 @@ class MapFragment : Fragment() {
         )
     }
 
-    private lateinit var googleMap:GoogleMap
+    private lateinit var googleMap: GoogleMap
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,7 +88,8 @@ class MapFragment : Fragment() {
         LocalBroadcastManager.getInstance(requireContext()).registerReceiver(
             foregroundOnlyBroadcastReceiver,
             IntentFilter(
-                ForegroundOnlyLocationService.ACTION_FOREGROUND_ONLY_LOCATION_BROADCAST)
+                ForegroundOnlyLocationService.ACTION_FOREGROUND_ONLY_LOCATION_BROADCAST
+            )
         )
     }
 
@@ -113,9 +114,7 @@ class MapFragment : Fragment() {
 
         val mapFragment = childFragmentManager.findFragmentById(R.id.map_fragment) as? SupportMapFragment
         mapFragment?.getMapAsync { googleMap ->
-            this.googleMap=googleMap
-            // Set custom info window adapter.
-            // googleMap.setInfoWindowAdapter(MarkerInfoWindowAdapter(this))
+            this.googleMap = googleMap
         }
 
         foregroundOnlyLocationButton = binding.btnActivationGps
@@ -292,26 +291,23 @@ class MapFragment : Fragment() {
                 viewModel.saveCurrentLocation(location!!)
 
                 // Show marker
-                addMarkers(googleMap,location!!)
+                addMarkers(googleMap, location!!)
             }
         }
     }
 
-    /**
-     * Adds marker representations of the places list on the provided GoogleMap object
-     */
-    private fun addMarkers(googleMap: GoogleMap,location: Location) {
+
+    private fun addMarkers(googleMap: GoogleMap, location: Location) {
         googleMap.setOnMapLoadedCallback {
             val marker = googleMap.addMarker(
                 MarkerOptions()
                     .title("Me")
-                    .position(LatLng(location.latitude,location.longitude) )
+                    .position(LatLng(location.latitude, location.longitude))
             )
 
             val bounds = LatLngBounds.builder()
-           bounds.include(LatLng(location.latitude,location.longitude) )
+            bounds.include(LatLng(location.latitude, location.longitude))
             googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), 20))
-
         }
 
     }
