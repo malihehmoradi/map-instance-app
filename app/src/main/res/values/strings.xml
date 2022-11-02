@@ -25,7 +25,13 @@
     <string name="east">East</string>
     <string name="north">North</string>
     <string name="elevation">Elevation</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="save_place">Save place</string>
+    <string name="current_location">Current Location</string>
+    <string name="show_last_positions">Show Last Positions</string>
+    <string name="error_null_name">Place name can\'t be null</string>
+    <string name="error_null_code" >Code can\'t be null</string>
+    <string name="label_north"><![CDATA[ North:   <font color="#000">  %s </font> ]]></string>
+    <string name="label_east"><![CDATA[ East:   <font color="#000">  %s </font>]]></string>
+    <string name="label_elevation"><![CDATA[ Elevation:   <font color="#000">  %s </font>]]></string>
 
 </resources>

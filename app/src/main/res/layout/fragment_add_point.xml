@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="location"
             type="android.location.Location" />
@@ -9,51 +12,117 @@
         <variable
             name="viewModel"
             type="ir.malihemoradi.mapapplication.viewModel.MapViewModel" />
+
+        <import type="android.text.Html" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/btn_close"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_margin="16dp"
-            android:layout_marginTop="16dp"
+        <LinearLayout
+            android:id="@+id/lnr_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.041"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_baseline_close_24" />
+            android:background="@color/white">
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_close"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="46dp"
+                android:layout_height="46dp"
+                android:layout_margin="8dp"
+                app:cornerRadius="50dp"
+                app:icon="@drawable/ic_round_arrow_back_24"
+                app:iconGravity="textStart"
+                app:iconSize="26dp"
+                app:iconTint="@color/black" />
+        </LinearLayout>
 
         <View
             android:id="@+id/divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="12dp"
-            android:alpha="0.6"
-            android:background="@color/black"
+            android:alpha="0.5"
+            android:background="@color/md_grey_500"
+            android:elevation="2dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_close" />
+            app:layout_constraintTop_toBottomOf="@id/lnr_toolbar" />
+
+        <TextView
+            android:id="@+id/txt_north"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_marginTop="6dp"
+            android:gravity="center"
+            android:text="@{Html.fromHtml(String.format(@string/label_north,location.latitude))}"
+            android:textSize="16sp"
+            app:drawableStartCompat="@drawable/ic_round_north_24"
+            app:drawableTint="@color/secondaryColorDark"
+            app:layout_constraintBottom_toTopOf="@+id/inputLayout_name"
+            app:layout_constraintEnd_toStartOf="@id/txt_east"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider"
+            app:layout_constraintVertical_bias="0.354"
+            tools:text="North:  25.366525" />
+
+        <TextView
+            android:id="@+id/txt_east"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:gravity="center"
+            android:text="@{Html.fromHtml(String.format(@string/label_east,location.longitude))}"
+            android:textSize="16sp"
+            app:drawableStartCompat="@drawable/ic_round_east_24"
+            app:drawableTint="@color/secondaryColorDark"
+            app:layout_constraintBottom_toTopOf="@+id/inputLayout_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/txt_north"
+            app:layout_constraintTop_toBottomOf="@+id/divider"
+            app:layout_constraintVertical_bias="0.321"
+            tools:text="East: 26.585856" />
+
+        <TextView
+            android:id="@+id/txt_elevation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="@{Html.fromHtml(String.format(@string/label_elevation,location.altitude))}"
+            android:textSize="16sp"
+            app:drawableStartCompat="@drawable/ic_round_elevator_24"
+            app:drawableTint="@color/secondaryColorDark"
+            app:layout_constraintBottom_toTopOf="@+id/inputLayout_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.176"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_north"
+            tools:text="Elevation: 2536" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/inputLayout_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="25dp"
+            android:hint="@string/point_name"
+            app:errorEnabled="true"
+            android:inputType="text"
+            app:errorContentDescription="@string/error_null_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/divider">
+            app:layout_constraintTop_toBottomOf="@id/txt_elevation"
+            app:startIconDrawable="@drawable/ic_baseline_place_24">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edt_point_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/point_name" />
+                android:imeOptions="actionNext"
+                android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -61,81 +130,36 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="25dp"
+            android:hint="@string/code"
+            android:inputType="number"
+            app:errorEnabled="true"
+            app:errorContentDescription="@string/error_null_code"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/inputLayout_name">
+            app:layout_constraintTop_toBottomOf="@id/inputLayout_name"
+            app:startIconDrawable="@drawable/ic_round_code_24">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edt_code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/code" />
+                android:imeOptions="actionDone"
+                android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/inputLayout_east"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="25dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/inputLayout_code">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edt_east"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/east"
-                android:text="@{Double.toString(location.latitude)}" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/inputLayout_north"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="25dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/inputLayout_east">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edt_north"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/north"
-                android:text="@{Double.toString(location.longitude)}" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/inputLayout_elevation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="25dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/inputLayout_north">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edt_elevation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/elevation"
-                android:text="@{Double.toString(location.accuracy)}" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_add"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_margin="20dp"
-            android:text="Add"
+            android:text="@string/save_place"
+            android:textAllCaps="false"
+            app:cornerRadius="50dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/inputLayout_elevation"
-            app:layout_constraintVertical_bias="0.926" />
+            app:layout_constraintTop_toBottomOf="@+id/inputLayout_code"
+            app:layout_constraintVertical_bias="0.956" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
-
-<!--    android:onClick="@{()->viewModel.saveNewPoint(edt_point_name.getText().toString(),edt_code.getText().toString(),edt_east.getText().toString(),edt_north.getText().toString(),edt_elevation.getText().toString())}"-->

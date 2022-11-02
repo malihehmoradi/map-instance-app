@@ -10,11 +10,13 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import ir.malihemoradi.mapapplication.App
+import ir.malihemoradi.mapapplication.R
 import ir.malihemoradi.mapapplication.databinding.FragmentAddPointBinding
 import ir.malihemoradi.mapapplication.viewModel.AddPlaceViewModel
 
 class AppPointFragment : Fragment() {
 
+    private lateinit var currentLocation: Location
     private lateinit var binding: FragmentAddPointBinding
     private val viewModel: AddPlaceViewModel by lazy {
         AddPlaceViewModel(
@@ -30,7 +32,7 @@ class AppPointFragment : Fragment() {
 
         binding = FragmentAddPointBinding.inflate(inflater, container, false)
 
-        val currentLocation: Location? = arguments?.getParcelable("CurrentLocation")
+         currentLocation = arguments?.getParcelable("CurrentLocation")!!
         binding.location = currentLocation
 
         return binding.root
@@ -45,12 +47,22 @@ class AppPointFragment : Fragment() {
         }
 
         binding.btnAdd.setOnClickListener {
+
+
+            if (binding.edtPointName.text.toString().isEmpty() ){
+                binding.inputLayoutName.error=getString(R.string.error_null_name)
+                return@setOnClickListener
+            }else if (binding.edtCode.text.toString().isEmpty()){
+                binding.inputLayoutCode.error=getString(R.string.error_null_code)
+                return@setOnClickListener
+            }
+
             viewModel.addNewPlace(
                 name = binding.edtPointName.text.toString(),
                 code = binding.edtCode.text.toString(),
-                east = binding.edtEast.text.toString(),
-                north = binding.edtNorth.text.toString(),
-                elevation = binding.edtElevation.text.toString()
+                east = currentLocation.longitude.toString(),
+                north = currentLocation.latitude.toString(),
+                elevation = currentLocation.altitude.toString()
             )
         }
 

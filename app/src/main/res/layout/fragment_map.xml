@@ -16,46 +16,66 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+        tools:layout="@layout/fragment_map" />
 
-    <ImageView
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btn_activation_gps"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="688dp"
+        android:layout_marginTop="12dp"
+        android:contentDescription="@string/current_location"
+        app:backgroundTint="@color/white"
+        app:borderWidth="0dp"
+        app:elevation="6dp"
+        app:fabSize="mini"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.041"
+        app:layout_constraintHorizontal_bias="0.95"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_baseline_gps_fixed_24" />
+        app:rippleColor="@color/primaryColor"
+        app:srcCompat="@drawable/ic_round_gps_fixed_24" />
 
-    <Button
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/btn_show_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="664dp"
+        android:layout_marginBottom="24dp"
+        android:backgroundTint="@color/white"
         android:drawableLeft="@drawable/ic_baseline_format_list_bulleted_24"
-        android:text="Show Records List"
+        android:elevation="0dp"
+        android:text="@string/show_last_positions"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        app:elevation="0dp"
+        app:icon="@drawable/ic_round_map_24"
+        app:iconSize="20dp"
+        app:iconTint="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:rippleColor="@color/primaryColor" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/btn_add_record"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="12dp"
-        android:layout_marginBottom="16dp"
-        android:foregroundTint="@color/white"
-        app:elevation="10dp"
-        app:fabCustomSize="50dp"
-        app:fabSize="normal"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:contentDescription="@string/save_place"
+        android:text="@string/save_place"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        app:cornerRadius="60dp"
+        app:icon="@drawable/ic_round_add_location_24"
+        app:iconGravity="end"
+        app:iconPadding="2dp"
+        app:iconSize="32dp"
+        app:iconTint="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.98"
+        app:layout_constraintHorizontal_bias="0.014"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/ic_baseline_add_24" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:rippleColor="@color/primaryColor" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

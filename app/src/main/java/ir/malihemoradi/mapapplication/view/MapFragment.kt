@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
+import android.widget.Button
 import androidx.core.app.ActivityCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.fragment.findNavController
@@ -24,6 +24,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import ir.malihemoradi.mapapplication.*
 import ir.malihemoradi.mapapplication.databinding.FragmentMapBinding
@@ -37,7 +38,7 @@ private const val TAG = "MapFragment"
 class MapFragment : Fragment() {
 
     private lateinit var binding: FragmentMapBinding
-    private lateinit var foregroundOnlyLocationButton: ImageView
+    private lateinit var foregroundOnlyLocationButton: FloatingActionButton
 
     // Listens for location broadcasts from ForegroundOnlyLocationService.
     private lateinit var foregroundOnlyBroadcastReceiver: ForegroundOnlyBroadcastReceiver
