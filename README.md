@@ -1,4 +1,4 @@
-# map-instant-app
+# map-instance-app
 An Android instance app
 <p align="center" >
    <img src="https://user-images.githubusercontent.com/45434883/199670535-dc5cde59-dba4-4aec-ad32-cbb6396a5031.png" width="260px" alt="Main Page"/>
