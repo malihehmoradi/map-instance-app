@@ -1,5 +1,10 @@
 # map-instant-app
 An Android instance app
+<p align="center" >
+   <img src="https://user-images.githubusercontent.com/45434883/199670535-dc5cde59-dba4-4aec-ad32-cbb6396a5031.png" width="260px" alt="Main Page"/>
+   <img src="https://user-images.githubusercontent.com/45434883/199670617-d1730945-3677-46da-a3d3-1f398db86a04.png"  width="260px" alt="Save Point"/>
+   <img src="https://user-images.githubusercontent.com/45434883/199670685-4da9e293-b34d-45e0-b3ee-bfbf1191551e.png"  width="260px" alt="All Points"/>
+</p>
 
 
 ### Android technologies that I used:
