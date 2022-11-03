@@ -12,16 +12,31 @@
         android:layout_height="53dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/white">
 
-        <ImageView
-            android:id="@+id/img_back"
-            android:layout_width="34dp"
-            android:layout_height="34dp"
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/last_positions"
+            android:textColor="@color/black"
+            android:layout_gravity="center_vertical"
             android:layout_margin="8dp"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:padding="4dp"
-            app:srcCompat="@drawable/ic_baseline_arrow_back_24" />
+            android:textStyle="bold"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_back"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:layout_margin="8dp"
+            app:cornerRadius="50dp"
+            app:icon="@drawable/ic_round_arrow_forward_24"
+            app:iconGravity="textStart"
+            app:iconSize="26dp"
+            app:iconTint="@color/black" />
+
     </LinearLayout>
 
     <View
@@ -29,6 +44,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:alpha="0.6"
+        android:elevation="2dp"
         android:background="@color/gray_light"
         app:layout_constraintTop_toBottomOf="@id/toolbar" />
 

@@ -34,5 +34,6 @@
     <string name="label_east"><![CDATA[ East:   <font color="#000">  %s </font>]]></string>
     <string name="label_elevation"><![CDATA[ Elevation:   <font color="#000">  %s </font>]]></string>
     <string name="message_currentlocation_is_null">At first enable GPS location</string>
+    <string name="last_positions">Last Positions</string>
 
 </resources>

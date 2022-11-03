@@ -42,7 +42,7 @@ class AppPointFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        binding.btnClose.setOnClickListener {
+        binding.btnBack.setOnClickListener {
             findNavController().popBackStack()
         }
 

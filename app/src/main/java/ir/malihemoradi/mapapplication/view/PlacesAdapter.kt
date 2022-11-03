@@ -17,7 +17,7 @@ class PlacesAdapter(private val list: List<Place>) :
 
         val textNumber=binding.txtNumber
 
-        fun bind(place: Place,position: Int) {
+        fun bind(position: Int) {
             textNumber.text= (position+1).toString()
         }
     }
@@ -29,6 +29,6 @@ class PlacesAdapter(private val list: List<Place>) :
 
     override fun onBindViewHolder(holder: PlaceViewHolder, position: Int) {
         binding.place=getItem(position)
-        holder.bind(getItem(position),position)
+        holder.bind(position)
     }
 }
