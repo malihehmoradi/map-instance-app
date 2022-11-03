@@ -68,8 +68,6 @@
         app:cornerRadius="60dp"
         app:icon="@drawable/ic_round_add_location_24"
         app:iconGravity="end"
-        app:iconPadding="2dp"
-        app:iconSize="32dp"
         app:iconTint="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.014"

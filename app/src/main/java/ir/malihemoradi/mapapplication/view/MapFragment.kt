@@ -2,7 +2,6 @@ package ir.malihemoradi.mapapplication.view
 
 import android.Manifest
 import android.content.*
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.content.pm.PackageManager
 import android.location.Location
 import android.net.Uri
@@ -14,8 +13,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import androidx.core.app.ActivityCompat
+import android.widget.Toast
+import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -29,7 +28,6 @@ import com.google.android.material.snackbar.Snackbar
 import ir.malihemoradi.mapapplication.*
 import ir.malihemoradi.mapapplication.databinding.FragmentMapBinding
 import ir.malihemoradi.mapapplication.helper.ForegroundOnlyLocationService
-import ir.malihemoradi.mapapplication.helper.SharedPreferenceUtil
 import ir.malihemoradi.mapapplication.viewModel.MapViewModel
 
 private const val REQUEST_FOREGROUND_ONLY_PERMISSIONS_REQUEST_CODE = 34
@@ -88,9 +86,7 @@ class MapFragment : Fragment() {
         super.onResume()
         LocalBroadcastManager.getInstance(requireContext()).registerReceiver(
             foregroundOnlyBroadcastReceiver,
-            IntentFilter(
-                ForegroundOnlyLocationService.ACTION_FOREGROUND_ONLY_LOCATION_BROADCAST
-            )
+            IntentFilter(ForegroundOnlyLocationService.ACTION_FOREGROUND_ONLY_LOCATION_BROADCAST)
         )
     }
 
@@ -116,21 +112,27 @@ class MapFragment : Fragment() {
         val mapFragment = childFragmentManager.findFragmentById(R.id.map_fragment) as? SupportMapFragment
         mapFragment?.getMapAsync { googleMap ->
             this.googleMap = googleMap
+           requestCurrentLocation()
         }
 
         foregroundOnlyLocationButton = binding.btnActivationGps
         binding.btnActivationGps.setOnClickListener {
-
-            // TODO: Step 1.0, Review Permissions: Checks and requests if needed.
-            if (foregroundPermissionApproved()) {
-                foregroundOnlyLocationService?.subscribeToLocationUpdates()
-                    ?: Log.d(TAG, "Service Not Bound")
-            } else {
-                requestForegroundPermissions()
-            }
+            requestCurrentLocation()
         }
 
         binding.btnAddRecord.setOnClickListener {
+
+            // Check current location
+            if (viewModel.getCurrentLocation() == null) {
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.message_currentlocation_is_null),
+                    Toast.LENGTH_LONG
+                ).show()
+                return@setOnClickListener
+            }
+
+
             // Go to Add new place
             val bundle = Bundle()
             bundle.putParcelable("CurrentLocation", viewModel.getCurrentLocation())
@@ -144,24 +146,18 @@ class MapFragment : Fragment() {
         }
     }
 
+    private fun requestCurrentLocation(){
+        // TODO: Step 1.0, Review Permissions: Checks and requests if needed.
+        if (foregroundPermissionApproved()) {
+            foregroundOnlyLocationService?.getCurrentLocation()
+                ?: Log.d(TAG, "Service Not Bound")
+        } else {
+            requestForegroundPermissions()
+        }
+    }
+
     override fun onStart() {
         super.onStart()
-        sharedPreferences.registerOnSharedPreferenceChangeListener(object :
-            OnSharedPreferenceChangeListener {
-            override fun onSharedPreferenceChanged(
-                sharedPreferences: SharedPreferences?,
-                key: String?
-            ) {
-                // Updates button states if new while in use location is added to SharedPreferences.
-                if (key == SharedPreferenceUtil.KEY_FOREGROUND_ENABLED) {
-//                    updateButtonState(
-//                        sharedPreferences!!.getBoolean(
-//                            SharedPreferenceUtil.KEY_FOREGROUND_ENABLED, false
-//                        )
-//                    )
-                }
-            }
-        })
 
         val serviceIntent = Intent(requireContext(), ForegroundOnlyLocationService::class.java)
         requireContext().bindService(
@@ -176,59 +172,16 @@ class MapFragment : Fragment() {
             requireContext().unbindService(foregroundOnlyServiceConnection)
             foregroundOnlyLocationServiceBound = false
         }
-//        sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
-
         super.onStop()
     }
 
     private fun foregroundPermissionApproved(): Boolean {
-        return PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(
+        return PackageManager.PERMISSION_GRANTED == checkSelfPermission(
             requireContext(),
             Manifest.permission.ACCESS_FINE_LOCATION
         )
     }
 
-
-//    private fun updateButtonState(trackingLocation: Boolean) {
-//        if (trackingLocation) {
-//            foregroundOnlyLocationButton.text =
-//                getString(R.string.stop_location_updates_button_text)
-//        } else {
-//            foregroundOnlyLocationButton.text =
-//                getString(R.string.start_location_updates_button_text)
-//        }
-//    }
-
-    // TODO: Step 1.0, Review Permissions: Method requests permissions.
-    private fun requestForegroundPermissions() {
-        val provideRationale = foregroundPermissionApproved()
-
-        // If the user denied a previous request, but didn't check "Don't ask again", provide
-        // additional rationale.
-        if (provideRationale) {
-            Snackbar.make(
-                binding.root,
-                R.string.permission_rationale,
-                Snackbar.LENGTH_LONG
-            )
-                .setAction(R.string.ok) {
-                    // Request permission
-                    ActivityCompat.requestPermissions(
-                        requireActivity(),
-                        arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                        REQUEST_FOREGROUND_ONLY_PERMISSIONS_REQUEST_CODE
-                    )
-                }
-                .show()
-        } else {
-            Log.d(TAG, "Request foreground only permission")
-            ActivityCompat.requestPermissions(
-                requireActivity(),
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                REQUEST_FOREGROUND_ONLY_PERMISSIONS_REQUEST_CODE
-            )
-        }
-    }
 
     // TODO: Step 1.0, Review Permissions: Handles permission result.
     override fun onRequestPermissionsResult(
@@ -237,7 +190,6 @@ class MapFragment : Fragment() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        Log.d(TAG, "onRequestPermissionResult")
 
         when (requestCode) {
             REQUEST_FOREGROUND_ONLY_PERMISSIONS_REQUEST_CODE -> when {
@@ -247,11 +199,9 @@ class MapFragment : Fragment() {
                     Log.d(TAG, "User interaction was cancelled.")
                 grantResults[0] == PackageManager.PERMISSION_GRANTED ->
                     // Permission was granted.
-                    foregroundOnlyLocationService?.subscribeToLocationUpdates()
+                    foregroundOnlyLocationService?.getCurrentLocation()
                 else -> {
                     // Permission denied.
-//                    updateButtonState(false)
-
                     Snackbar.make(
                         binding.root,
                         R.string.permission_denied_explanation,
@@ -276,6 +226,35 @@ class MapFragment : Fragment() {
         }
     }
 
+    // TODO: Step 1.0, Review Permissions: Method requests permissions.
+    private fun requestForegroundPermissions() {
+        val provideRationale = foregroundPermissionApproved()
+
+        // If the user denied a previous request, but didn't check "Don't ask again", provide
+        // additional rationale.
+        if (provideRationale) {
+            Snackbar.make(
+                binding.root,
+                R.string.permission_rationale,
+                Snackbar.LENGTH_LONG
+            )
+                .setAction(R.string.ok) {
+                    // Request permission
+                    requestPermissions(
+                        arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                        REQUEST_FOREGROUND_ONLY_PERMISSIONS_REQUEST_CODE
+                    )
+                }
+                .show()
+        } else {
+            Log.d(TAG, "Request foreground only permission")
+            requestPermissions(
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                REQUEST_FOREGROUND_ONLY_PERMISSIONS_REQUEST_CODE
+            )
+        }
+    }
+
     /**
      * Receiver for location broadcasts from [ForegroundOnlyLocationService].
      */
@@ -297,7 +276,6 @@ class MapFragment : Fragment() {
         }
     }
 
-
     private fun addMarkers(googleMap: GoogleMap, location: Location) {
         googleMap.setOnMapLoadedCallback {
             val marker = googleMap.addMarker(
@@ -312,6 +290,5 @@ class MapFragment : Fragment() {
         }
 
     }
-
 
 }

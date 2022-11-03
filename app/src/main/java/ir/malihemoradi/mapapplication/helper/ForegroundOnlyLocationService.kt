@@ -1,14 +1,11 @@
 package ir.malihemoradi.mapapplication.helper
 
-import android.annotation.SuppressLint
 import android.app.Service
 import android.content.Intent
 import android.content.res.Configuration
 import android.location.Location
 import android.os.Binder
 import android.os.IBinder
-import android.os.Looper
-import android.util.Log
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.gms.location.*
 import java.util.concurrent.TimeUnit
@@ -29,8 +26,10 @@ class ForegroundOnlyLocationService : Service() {
     private lateinit var locationCallback: LocationCallback
     private var currentLocation: Location? = null
 
-    @SuppressLint("MissingPermission")
+    private var canGetLocation=false
+
     override fun onCreate() {
+        super.onCreate()
 
         // TODO: Step 1.2, Review the FusedLocationProviderClient.
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
@@ -81,6 +80,10 @@ class ForegroundOnlyLocationService : Service() {
             }
         }
         fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, null)
+
+    }
+
+    fun getCurrentLocation(){
         fusedLocationProviderClient.lastLocation.addOnCompleteListener {
             try {
                 if (it.isComplete && it.result != null) {
@@ -98,51 +101,7 @@ class ForegroundOnlyLocationService : Service() {
                 e.printStackTrace()
             }
         }
-
     }
-
-
-    fun subscribeToLocationUpdates() {
-        Log.d(TAG, "subscribeToLocationUpdates()")
-
-        SharedPreferenceUtil.saveLocationTrackingPref(this, true)
-
-        // Binding to this service doesn't actually trigger onStartCommand(). That is needed to
-        // ensure this Service can be promoted to a foreground service, i.e., the service needs to
-        // be officially started (which we do here).
-        startService(Intent(applicationContext, ForegroundOnlyLocationService::class.java))
-
-        try {
-            // TODO: Step 1.5, Subscribe to location changes.
-            fusedLocationProviderClient.requestLocationUpdates(
-                locationRequest, locationCallback, Looper.getMainLooper())
-        } catch (unlikely: SecurityException) {
-            SharedPreferenceUtil.saveLocationTrackingPref(this, false)
-            Log.e(TAG, "Lost location permissions. Couldn't remove updates. $unlikely")
-        }
-    }
-
-    fun unsubscribeToLocationUpdates() {
-        Log.d(TAG, "unsubscribeToLocationUpdates()")
-
-        try {
-            // TODO: Step 1.6, Unsubscribe to location changes.
-            val removeTask = fusedLocationProviderClient.removeLocationUpdates(locationCallback)
-            removeTask.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Log.d(TAG, "Location Callback removed.")
-                    stopSelf()
-                } else {
-                    Log.d(TAG, "Failed to remove Location Callback.")
-                }
-            }
-            SharedPreferenceUtil.saveLocationTrackingPref(this, false)
-        } catch (unlikely: SecurityException) {
-            SharedPreferenceUtil.saveLocationTrackingPref(this, true)
-            Log.e(TAG, "Lost location permissions. Couldn't remove updates. $unlikely")
-        }
-    }
-
 
     override fun onBind(intent: Intent): IBinder {
         stopForeground(true)

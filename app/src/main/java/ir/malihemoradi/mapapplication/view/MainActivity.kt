@@ -7,9 +7,11 @@ import ir.malihemoradi.mapapplication.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var binding:ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding =ActivityMainBinding.inflate(LayoutInflater.from(this))
+         binding =ActivityMainBinding.inflate(LayoutInflater.from(this))
         setContentView(binding.root)
     }
 
