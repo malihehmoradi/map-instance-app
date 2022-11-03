@@ -3,8 +3,9 @@ An Android instance app
 <p align="center" >
    <img src="https://user-images.githubusercontent.com/45434883/199670535-dc5cde59-dba4-4aec-ad32-cbb6396a5031.png" width="260px" alt="Main Page"/>
    <img src="https://user-images.githubusercontent.com/45434883/199682493-7ccc017b-9bfc-4585-83dc-5eac3c61d60c.png"  width="260px" alt="Save Point"/>
-   <img src="https://user-images.githubusercontent.com/45434883/199682546-3583228c-9232-4367-ad26-f3c23e3f14f6.png"  width="260px" alt="All Points"/>
+   <img src="https://user-images.githubusercontent.com/45434883/199711212-d5c329c1-1577-4c2c-9278-9096404111fb.png"  width="260px" alt="All Points"/>
 </p>
+
 
 ### Android technologies that I used:
 
