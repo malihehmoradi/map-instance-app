@@ -1,5 +1,6 @@
 # map-instance-app
-A map instance app
+A map instance app for seeing the current position of the user and saving that in the database and showing a list of saved locations.
+
 <p align="center" >
    <img src="https://user-images.githubusercontent.com/45434883/199670535-dc5cde59-dba4-4aec-ad32-cbb6396a5031.png" width="260px" alt="Main Page"/>
    <img src="https://user-images.githubusercontent.com/45434883/199682493-7ccc017b-9bfc-4585-83dc-5eac3c61d60c.png"  width="260px" alt="Save Point"/>
